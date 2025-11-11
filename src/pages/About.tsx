@@ -120,24 +120,7 @@ const About: React.FC = () => {
       </div>
 
       {/* Credits */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-8 border border-blue-200 dark:border-blue-800 text-center">
-        <div className="flex items-center justify-center space-x-2 mb-4">
-          <Heart className="h-6 w-6 text-red-500" />
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Made with Love</h2>
-        </div>
-        <p className="text-gray-600 dark:text-gray-300 mb-4">
-          This project is developed and maintained by the Ashlynn Repository.
-        </p>
-        <a
-          href="https://t.me/Ashlynn_Repository"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors duration-200"
-        >
-          <ExternalLink className="h-5 w-5" />
-          <span>Visit Ashlynn Repository</span>
-        </a>
-      </div>
+      
     </div>
   );
 };
