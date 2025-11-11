@@ -109,7 +109,7 @@ const DownloadCard: React.FC<DownloadCardProps> = ({ fileInfo }) => {
                 className="flex items-center justify-center space-x-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg flex-1 group"
               >
                 <ExternalLink className="h-5 w-5 group-hover:rotate-12" />
-                <span>Proxy Download</span>
+                <span>PLAY VIDEO</span>
               </button>
             </div>
 
