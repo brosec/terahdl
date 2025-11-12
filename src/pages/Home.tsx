@@ -84,46 +84,11 @@ const Home: React.FC = () => {
         </div>
 
         {/* Cookie Status */}
-        <div className="mb-4 sm:mb-6 md:mb-8">
-          <div className="animate-fade-in bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div className="flex items-center space-x-3">
-                {hasCookie() ? (
-                  <>
-                    <div className="relative">
-                      <CheckCircle className="h-6 w-6 sm:h-7 sm:w-7 text-green-500 animate-pulse" />
-                      <div className="absolute inset-0 rounded-full bg-green-500 opacity-20 animate-ping"></div>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">Cookie Configured</p>
-                      <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Ready to download files</p>
-                    </div>
+        
                   </>
                 ) : (
                   <>
-                    <div className="relative">
-                      <AlertCircle className="h-6 w-6 sm:h-7 sm:w-7 text-amber-500 animate-bounce" />
-                      <div className="absolute inset-0 rounded-full bg-amber-500 opacity-20 animate-pulse"></div>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">Cookie Required</p>
-                      <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Configure your TeraBox cookie to start downloading</p>
-                    </div>
-                  </>
-                )}
-              </div>
-              <button
-                onClick={() => setShowCookieModal(true)}
-                className="relative overflow-hidden flex items-center justify-center space-x-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl sm:rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl group"
-              >
-                <Settings className="h-4 w-4 sm:h-5 sm:w-5 group-hover:rotate-180 transition-transform duration-500" />
-                <span className="whitespace-nowrap text-sm sm:text-base font-medium">{hasCookie() ? 'Update' : 'Setup'} Cookie</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-              </button>
-            </div>
-          </div>
-        </div>
-
+                    
         {/* Download Section */}
         <div className="animate-fade-in-up bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border border-gray-200 dark:border-gray-700 mb-4 sm:mb-6 md:mb-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]">
           <div className="max-w-3xl mx-auto">
