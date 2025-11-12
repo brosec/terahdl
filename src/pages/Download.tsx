@@ -419,7 +419,7 @@ print(data)`;
               
               <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                 <h4 className="font-semibold text-gray-900 dark:text-white mb-2">proxy_url</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-300">External proxy download URL (https://terabox.ashlynn.workers.dev/proxy)</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">External proxy download URL (https://teraboxhdl.site/paapi/proxy)</p>
               </div>
             </div>
           </div>
@@ -469,7 +469,7 @@ print(data)`;
               </div>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4">
                 <h4 className="font-semibold text-gray-900 dark:text-white mb-2 text-sm sm:text-base">External Proxy</h4>
-                <code className="text-xs sm:text-sm text-purple-600 dark:text-purple-400 break-all block overflow-x-auto">https://terabox.ashlynn.workers.dev/proxy</code>
+                <code className="text-xs sm:text-sm text-purple-600 dark:text-purple-400 break-all block overflow-x-auto">https://teraboxhdl.site/paapi/proxy</code>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
