@@ -8,7 +8,10 @@ const crypto = require('crypto');
 // NDUS_ENCRYPTION_KEY
 // ADMIN_SECRET (HTTP header x-admin-secret must match)
 
-const PG_CONN = process.env.DATABASE_URL || process.env.NETLIFY_DB_URL;
+const PG_CONN =
+  process.env.DATABASE_URL ||
+  process.env.NETLIFY_DB_URL ||
+  process.env.NETLIFY_DATABASE_URL;
 const ENC_KEY = process.env.NDUS_ENCRYPTION_KEY;
 const ADMIN_SECRET = process.env.ADMIN_SECRET;
 
