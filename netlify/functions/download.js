@@ -1,9 +1,16 @@
+// netlify/functions/download.js
+// Modified to use server-side ndus from DB mapped to api_key_id + api_key_secret
+
+const { Client } = require('pg');
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
+
 const DEFAULT_COOKIE = "ndus=Y2YqaCTteHuiU3Ud_MYU7vHoVW4DNBi0MPmg_1tQ" // Fallback cookie
 
 function getHeaders(cookie) {
   return {
     "Accept": "application/json, text/plain, */*",
-    "Accept-Encoding": "gzip, deflate, br", 
+    "Accept-Encoding": "gzip, deflate, br",
     "Accept-Language": "en-US,en;q=0.9,hi;q=0.8",
     "Connection": "keep-alive",
     "DNT": "1",
@@ -37,6 +44,20 @@ function findBetween(str, start, end) {
   const endIndex = str.indexOf(end, startIndex);
   if (startIndex === -1 || endIndex === -1) return "";
   return str.slice(startIndex, endIndex);
+}
+
+// AES-256-GCM decrypt helper
+// encryptedBase64 expected format: iv(12) + authTag(16) + ciphertext, base64 encoded
+function decryptNdus(encryptedBase64, key) {
+  const raw = Buffer.from(encryptedBase64, 'base64');
+  if (raw.length < 28) throw new Error('Invalid encrypted payload');
+  const iv = raw.slice(0, 12);
+  const tag = raw.slice(12, 28);
+  const ciphertext = raw.slice(28);
+  const decipher = crypto.createDecipheriv('aes-256-gcm', Buffer.from(key, 'utf8'), iv);
+  decipher.setAuthTag(tag);
+  const decrypted = Buffer.concat([decipher.update(ciphertext), decipher.final()]);
+  return decrypted.toString('utf8');
 }
 
 async function getFileInfo(link, event, cookie) {
@@ -108,7 +129,7 @@ async function getFileInfo(link, event, cookie) {
       proxy_url: `https://terabox.ashlynn.workers.dev/proxy?url=${encodeURIComponent(fileInfo.dlink)}&file_name=${encodeURIComponent(fileInfo.server_filename || 'download')}&cookie=${encodeURIComponent(cookie)}`,
     };
   } catch (error) {
-    console.error("Error in getFileInfo:", error.message);
+    console.error("Error in getFileInfo:", error && error.message ? error.message : error);
     return { error: "A generic error occurred. Please try again." };
   }
 }
@@ -119,6 +140,11 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Headers": "Content-Type",
   "Access-Control-Expose-Headers": "Content-Length"
 };
+
+// DB & encryption env variables
+// Set these in Netlify site environment variables
+const PG_CONN = process.env.DATABASE_URL || process.env.NETLIFY_DB_URL;
+const ENC_KEY = process.env.NDUS_ENCRYPTION_KEY; // must match key used to encrypt ndus in DB
 
 exports.handler = async (event, context) => {
   // Handle CORS preflight
@@ -141,7 +167,7 @@ exports.handler = async (event, context) => {
 
   try {
     const body = JSON.parse(event.body || '{}');
-    const { link, cookies } = body;
+    const { link, api_key_id, api_key_secret } = body;
     
     if (!link) {
       return {
@@ -151,22 +177,91 @@ exports.handler = async (event, context) => {
       };
     }
 
-    if (!cookies) {
+    if (!api_key_id || !api_key_secret) {
       return {
         statusCode: 400,
         headers: { "Content-Type": "application/json", ...CORS_HEADERS },
-        body: JSON.stringify({ error: "Missing required parameter: cookies" })
+        body: JSON.stringify({ error: "Missing required parameters: api_key_id and api_key_secret" })
       };
     }
 
-    const fileInfo = await getFileInfo(link, event, cookies);
+    if (!PG_CONN || !ENC_KEY) {
+      console.error('Missing DATABASE_URL or NDUS_ENCRYPTION_KEY env var');
+      return {
+        statusCode: 500,
+        headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+        body: JSON.stringify({ error: "Server misconfiguration" })
+      };
+    }
+
+    // connect to DB
+    const client = new Client({ connectionString: PG_CONN, ssl: { rejectUnauthorized: false } });
+    await client.connect();
+
+    // fetch by api_key_id (scalable)
+    const q = 'SELECT id, api_key_hash, ndus_encrypted, is_disabled FROM api_clients WHERE api_key_id = $1';
+    const res = await client.query(q, [api_key_id]);
+    if (!res.rows || res.rows.length === 0) {
+      await client.end();
+      return {
+        statusCode: 401,
+        headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+        body: JSON.stringify({ error: "Invalid API key id" })
+      };
+    }
+
+    const row = res.rows[0];
+    if (row.is_disabled) {
+      await client.end();
+      return {
+        statusCode: 403,
+        headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+        body: JSON.stringify({ error: "Account disabled" })
+      };
+    }
+
+    const match = await bcrypt.compare(api_key_secret, row.api_key_hash);
+    if (!match) {
+      await client.end();
+      return {
+        statusCode: 401,
+        headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+        body: JSON.stringify({ error: "Invalid API credentials" })
+      };
+    }
+
+    // decrypt ndus
+    let ndus;
+    try {
+      ndus = decryptNdus(row.ndus_encrypted, ENC_KEY);
+    } catch (err) {
+      console.error('Failed to decrypt ndus', err);
+      await client.end();
+      return {
+        statusCode: 500,
+        headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+        body: JSON.stringify({ error: "Server error decrypting credentials" })
+      };
+    }
+
+    // update last_used_at asynchronously
+    client.query('UPDATE api_clients SET last_used_at = now() WHERE id = $1', [row.id]).catch(e => console.error('update last_used error', e));
+
+    // use decrypted ndus as cookie
+    const cookie = `ndus=${ndus}`;
+
+    // call existing parsing flow with server-side cookie
+    const fileInfo = await getFileInfo(link, event, cookie);
+
+    await client.end();
+
     return {
       statusCode: fileInfo.error ? 400 : 200,
       headers: { "Content-Type": "application/json", ...CORS_HEADERS },
       body: JSON.stringify(fileInfo)
     };
   } catch (error) {
-    console.error("Download API error:", error.message);
+    console.error("Download API error:", error && error.message ? error.message : error);
     return {
       statusCode: 500,
       headers: { "Content-Type": "application/json", ...CORS_HEADERS },
@@ -174,3 +269,4 @@ exports.handler = async (event, context) => {
     };
   }
 };
+
