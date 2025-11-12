@@ -46,20 +46,44 @@ function findBetween(str, start, end) {
   return str.slice(startIndex, endIndex);
 }
 
-// AES-256-GCM decrypt helper
-// encryptedBase64 expected format: iv(12) + authTag(16) + ciphertext, base64 encoded
-function decryptNdus(encryptedBase64, key) {
+// --- Key derivation + AES-GCM helpers ---
+// Accepts:
+//  - 64-char hex string (preferred)
+//  - base64 (32 bytes)
+//  - any passphrase (will derive 32 bytes via sha256)
+function deriveKeyFromEnv(keyStr) {
+  if (!keyStr) throw new Error('NDUS_ENCRYPTION_KEY not set');
+  // hex 64 chars
+  if (/^[0-9a-fA-F]{64}$/.test(keyStr)) {
+    return Buffer.from(keyStr, 'hex'); // 32 bytes
+  }
+  // try base64
+  try {
+    const b = Buffer.from(keyStr, 'base64');
+    if (b.length === 32) return b;
+  } catch (e) {
+    // ignore
+  }
+  // fallback: derive via sha256
+  return crypto.createHash('sha256').update(keyStr).digest();
+}
+
+// decrypt: accept base64(iv + authTag + ciphertext)
+function decryptNdus(encryptedBase64, envKey) {
+  const key = deriveKeyFromEnv(envKey);
+  if (key.length !== 32) throw new Error('Derived key is not 32 bytes');
   const raw = Buffer.from(encryptedBase64, 'base64');
   if (raw.length < 28) throw new Error('Invalid encrypted payload');
   const iv = raw.slice(0, 12);
   const tag = raw.slice(12, 28);
   const ciphertext = raw.slice(28);
-  const decipher = crypto.createDecipheriv('aes-256-gcm', Buffer.from(key, 'utf8'), iv);
+  const decipher = crypto.createDecipheriv('aes-256-gcm', key, iv);
   decipher.setAuthTag(tag);
   const decrypted = Buffer.concat([decipher.update(ciphertext), decipher.final()]);
   return decrypted.toString('utf8');
 }
 
+// ----- existing parsing logic (unchanged) -----
 async function getFileInfo(link, event, cookie) {
   try {
     if (!link) {
@@ -173,6 +197,7 @@ exports.handler = async (event, context) => {
     const { link, api_key_id, api_key_secret } = body;
     
     if (!link) {
+      await client.end().catch(()=>{});
       return {
         statusCode: 400,
         headers: { "Content-Type": "application/json", ...CORS_HEADERS },
@@ -181,6 +206,7 @@ exports.handler = async (event, context) => {
     }
 
     if (!api_key_id || !api_key_secret) {
+      await client.end().catch(()=>{});
       return {
         statusCode: 400,
         headers: { "Content-Type": "application/json", ...CORS_HEADERS },
@@ -272,4 +298,3 @@ exports.handler = async (event, context) => {
     };
   }
 };
-
