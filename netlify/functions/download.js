@@ -143,7 +143,10 @@ const CORS_HEADERS = {
 
 // DB & encryption env variables
 // Set these in Netlify site environment variables
-const PG_CONN = process.env.DATABASE_URL || process.env.NETLIFY_DB_URL;
+const PG_CONN =
+  process.env.DATABASE_URL ||
+  process.env.NETLIFY_DB_URL ||
+  process.env.NETLIFY_DATABASE_URL;
 const ENC_KEY = process.env.NDUS_ENCRYPTION_KEY; // must match key used to encrypt ndus in DB
 
 exports.handler = async (event, context) => {
