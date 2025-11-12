@@ -83,11 +83,6 @@ const Home: React.FC = () => {
           </div>
         </div>
 
-        {/* Cookie Status */}
-        
-                  </>
-                ) : (
-                  <>
                     
         {/* Download Section */}
         <div className="animate-fade-in-up bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border border-gray-200 dark:border-gray-700 mb-4 sm:mb-6 md:mb-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]">
