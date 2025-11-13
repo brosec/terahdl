@@ -1,4 +1,12 @@
-interface FileInfo {
+// services/api.ts
+// THIS VERSION HARDCODES API KEY + SECRET IN THE FRONTEND (NOT SECURE)
+// Use only for temporary testing. Remove ASAP.
+
+// Place your key + secret here (from create_api_key)
+const API_KEY_ID = "5e6ecd5e11";
+const API_KEY_SECRET = "eb0415b6bc004c8dad3ee938f46c065d52eb5b1a606fc6f7";
+
+export interface FileInfo {
   file_name: string;
   download_link: string;
   thumbnail: string;
@@ -8,7 +16,6 @@ interface FileInfo {
   error?: string;
 }
 
-// Call YOUR Netlify backend → backend adds api_key_id + api_key_secret
 export const downloadFile = async (link: string): Promise<FileInfo> => {
   try {
     if (!link) {
@@ -17,8 +24,14 @@ export const downloadFile = async (link: string): Promise<FileInfo> => {
 
     const response = await fetch('/api/download', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ link }),   // ❗ ONLY LINK — no secrets here
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        link,
+        api_key_id: API_KEY_ID,          // HARD-CODED
+        api_key_secret: API_KEY_SECRET,  // HARD-CODED
+      }),
     });
 
     const data = await response.json();
@@ -30,11 +43,12 @@ export const downloadFile = async (link: string): Promise<FileInfo> => {
     return data as FileInfo;
 
   } catch (error) {
-    console.error("API call failed:", error);
+    console.error('API call failed:', error);
     return { error: "A generic error occurred. Please try again." } as FileInfo;
   }
 };
 
-// Export for compatibility
+// Optional alias
 export const getFileInfo = downloadFile;
+
 export default { downloadFile };
