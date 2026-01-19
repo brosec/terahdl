@@ -5,7 +5,7 @@ const { Client } = require('pg');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
-const DEFAULT_COOKIE = "ndus=Y2YqaCTteHuiU3Ud_MYU7vHoVW4DNBi0MPmg_1tQ" // Fallback cookie
+const DEFAULT_COOKIE = "ndus=YQP4kd8peHui0CAynEq4pKR3bLTgKKpGA4jHm8dp;" // Fallback cookie
 
 function getHeaders(cookie) {
   return {
@@ -14,7 +14,7 @@ function getHeaders(cookie) {
     "Accept-Language": "en-US,en;q=0.9,hi;q=0.8",
     "Connection": "keep-alive",
     "DNT": "1",
-    "Host": "www.1024terabox.com",
+    "Host": "dm.1024tera.com",
     "Upgrade-Insecure-Requests": "1",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36 Edg/135.0.0.0",
     "sec-ch-ua": '"Microsoft Edge";v="135", "Not-A.Brand";v="8", "Chromium";v="135"',
@@ -133,7 +133,7 @@ async function getFileInfo(link, event, cookie) {
       root: "1,",
     });
 
-    response = await fetch(`https://www.1024terabox.com/share/list?${params}`, { headers });
+    response = await fetch(`https://dm.1024tera.com/share/list?${params}`, { headers });
     const data = await response.json();
 
     if (!data || !data.list || !data.list.length || data.errno) {
