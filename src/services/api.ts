@@ -3,8 +3,8 @@
 // Use only for temporary testing. Remove ASAP.
 
 // Place your key + secret here (from create_api_key)
-const API_KEY_ID = "eb624359c2";
-const API_KEY_SECRET = "d01cf4c7f19d814a1a7a26b827bd1766ea4685375fb13344";
+const API_KEY_ID = "83304c2899";
+const API_KEY_SECRET = "5b7b8699dc78942641e109b4de242c311812daddcefad63d";
 
 export interface FileInfo {
   file_name: string;
