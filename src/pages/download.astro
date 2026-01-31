@@ -1,8 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import GlassCard from "../components/GlassCard.jsx";
-import Downloader from "../components/Downloader.jsx";
-import Turnstile from "../components/Turnstile.jsx";
+import DownloadApp from "../components/DownloadApp.jsx";
 
 const surl = Astro.url.searchParams.get("surl");
 ---
@@ -12,51 +11,13 @@ const surl = Astro.url.searchParams.get("surl");
   description="View and download details of your public TeraBox shared file."
 >
   <GlassCard>
+    <h1 class="text-2xl font-bold mb-2">TeraBox Download</h1>
 
-    {!surl ? (
-      <>
-        <h1 class="text-xl font-semibold mb-2">TeraBox Download</h1>
-        <p class="text-slate-400">
-          Enter a valid TeraBox share link from the homepage to continue.
-        </p>
-      </>
-    ) : (
-      <div client:load id="app"></div>
-    )}
+    <p class="text-slate-400 mb-4">
+      This tool helps you access details of files shared via public TeraBox links.
+    </p>
 
+    <!-- React app mounts safely here -->
+    <DownloadApp client:load surl={surl} />
   </GlassCard>
 </BaseLayout>
-
-{ srl && false }
-
-<script type="module">
-  import React from "react";
-  import { createRoot } from "react-dom/client";
-  import Downloader from "../components/Downloader.jsx";
-  import Turnstile from "../components/Turnstile.jsx";
-
-  const surl = new URLSearchParams(location.search).get("surl");
-  const root = createRoot(document.getElementById("app"));
-
-  function App() {
-    const [token, setToken] = React.useState(null);
-
-    return (
-      <>
-        {!token && (
-          <>
-            <p className="text-slate-400 mb-2">
-              Please verify to continue.
-            </p>
-            <Turnstile onVerify={setToken} />
-          </>
-        )}
-
-        {token && <Downloader surl={surl} token={token} />}
-      </>
-    );
-  }
-
-  root.render(<App />);
-</script>
-
