@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import GlassCard from "../components/GlassCard.jsx";
+---
+<BaseLayout title="TeraBox Download Helper"
+description="Access details of your public TeraBox shared files easily.">
+  <GlassCard>
+    <h1 class="text-3xl font-bold">TeraBox Download Helper</h1>
+    <p class="text-slate-400 mt-2">
+      A simple assistant for publicly shared TeraBox links.
+    </p>
+    <form action="/download" method="get" class="mt-4 flex gap-2">
+      <input name="surl" required class="flex-1 px-3 py-2 rounded bg-slate-800 border border-slate-700" placeholder="Enter surl" />
+      <button class="px-4 py-2 bg-blue-600 rounded">Continue</button>
+    </form>
+  </GlassCard>
+</BaseLayout>

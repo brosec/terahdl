@@ -1,0 +1,9 @@
+import{r as i}from"./index.CVf8TyFT.js";var d={exports:{}},a={};/**
+ * @license React
+ * react-jsx-runtime.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */var f=i,p=Symbol.for("react.element"),m=Symbol.for("react.fragment"),x=Object.prototype.hasOwnProperty,_=f.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,h={key:!0,ref:!0,__self:!0,__source:!0};function c(s,e,n){var t,o={},l=null,u=null;n!==void 0&&(l=""+n),e.key!==void 0&&(l=""+e.key),e.ref!==void 0&&(u=e.ref);for(t in e)x.call(e,t)&&!h.hasOwnProperty(t)&&(o[t]=e[t]);if(s&&s.defaultProps)for(t in e=s.defaultProps,e)o[t]===void 0&&(o[t]=e[t]);return{$$typeof:p,type:s,key:l,ref:u,props:o,_owner:_.current}}a.Fragment=m;a.jsx=c;a.jsxs=c;d.exports=a;var r=d.exports;function j(){return r.jsxs("div",{className:"animate-pulse space-y-3",children:[r.jsx("div",{className:"h-6 bg-slate-700 rounded"}),r.jsx("div",{className:"h-48 bg-slate-700 rounded"}),r.jsx("div",{className:"h-10 bg-slate-700 rounded"})]})}function y({surl:s}){const[e,n]=i.useState(null);return i.useEffect(()=>{fetch(`https://YOUR_VERCEL_APP/api/terabox?surl=${s}`,{headers:{"x-turnstile-token":window.__TURNSTILE__}}).then(t=>t.json()).then(n).catch(()=>n({error:!0}))},[]),e?e.error?r.jsx("p",{children:"Unable to process this link right now."}):r.jsxs(r.Fragment,{children:[r.jsx("h2",{className:"text-xl font-semibold",children:e.title}),e.thumbnail&&r.jsx("img",{src:e.thumbnail,className:"rounded my-3"}),r.jsxs("p",{children:["Size: ",e.size]}),r.jsx("a",{className:"inline-block mt-3 px-4 py-2 bg-blue-600 rounded",href:e.fastcdn,target:"_blank",children:"Download"})]}):r.jsx(j,{})}export{y as default};

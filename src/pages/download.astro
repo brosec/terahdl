@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import GlassCard from "../components/GlassCard.jsx";
+import Downloader from "../components/Downloader.jsx";
+const surl = Astro.url.searchParams.get("surl");
+---
+<BaseLayout title="Download"
+description="View details and download your TeraBox shared file.">
+  <GlassCard>
+    {!surl ? (
+      <p>Paste a valid surl to continue.</p>
+    ) : (
+      <Downloader client:load surl={surl} />
+    )}
+  </GlassCard>
+</BaseLayout>
