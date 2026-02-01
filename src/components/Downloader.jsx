@@ -5,7 +5,7 @@ export default function Downloader({ surl }) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch(`http://tera.weber.eu.org/api/terabox?surl=${surl}`, {
+    fetch(`https://tera.weber.eu.org/api/terabox?surl=${surl}`, {
       headers: { "x-turnstile-token": window.__TURNSTILE__ }
     })
       .then(r => r.json())
@@ -28,4 +28,5 @@ export default function Downloader({ surl }) {
     </>
   );
 }
+
 
