@@ -1,23 +1,65 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ToolApp from "../components/ToolApp.jsx";
+import FeatureCard from "../components/FeatureCard.jsx";
 ---
 
 <BaseLayout
-title="Download TeraBox Videos Easily"
-description="Access details and download files shared via public TeraBox links."
+title="Download TeraBox Files Easily"
+description="Access details and download publicly shared TeraBox files safely."
 >
 
-<section class="py-10 text-center">
-  <h2 class="text-4xl font-bold mb-3">
-    Download TeraBox Files Easily
-  </h2>
+<section class="text-center mb-12">
+  <h1 class="text-4xl font-bold mb-3">
+    TeraBox Download Helper
+  </h1>
 
   <p class="text-slate-400 max-w-xl mx-auto">
-    Paste your TeraBox share link below to fetch file details and download safely.
+    Paste your public TeraBox link below to fetch file details and download securely.
   </p>
 </section>
 
 <ToolApp client:load />
+
+<section class="grid md:grid-cols-3 gap-6 mt-16">
+  <FeatureCard
+    client:load
+    title="Fast Access"
+    desc="Quickly fetch file information without login."
+  />
+
+  <FeatureCard
+    client:load
+    title="Secure Requests"
+    desc="Protected by verification and secure API access."
+  />
+
+  <FeatureCard
+    client:load
+    title="Mobile Friendly"
+    desc="Designed to work smoothly on all devices."
+  />
+</section>
+
+<section class="mt-16 space-y-6">
+  <h2 class="text-2xl font-bold">How it works</h2>
+
+  <ol class="text-slate-400 space-y-2 list-decimal list-inside">
+    <li>Copy your public TeraBox share link.</li>
+    <li>Paste it into the tool above.</li>
+    <li>Verify request and fetch file details.</li>
+    <li>Download using direct access link.</li>
+  </ol>
+</section>
+
+<section class="mt-16 space-y-4">
+  <h2 class="text-2xl font-bold">About TeraBoxHDL</h2>
+
+  <p class="text-slate-400">
+    TeraBoxHDL is a lightweight helper tool built to assist users in accessing
+    information about publicly shared files on TeraBox. The service does not
+    host or store files and simply acts as an access helper.
+  </p>
+</section>
 
 </BaseLayout>

@@ -6,28 +6,30 @@ body {
   @apply bg-slate-950 text-slate-100;
 }
 
-/* Gradient glow background */
-.bg-glow {
+/* subtle background glow */
+.bg-main {
   background:
-    radial-gradient(circle at 20% 20%, #3b82f6aa, transparent 40%),
-    radial-gradient(circle at 80% 30%, #9333eaaa, transparent 40%),
-    radial-gradient(circle at 40% 80%, #06b6d4aa, transparent 40%);
+    radial-gradient(circle at 10% 10%, #2563eb22, transparent 40%),
+    radial-gradient(circle at 90% 20%, #9333ea22, transparent 40%);
 }
 
-/* Glass cards */
 .glass {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(18px);
-  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255,255,255,.06);
+  backdrop-filter: blur(16px);
 }
 
-/* shimmer loading */
+.card {
+  @apply glass rounded-xl p-6 shadow-xl;
+}
+
+/* shimmer */
 .shimmer {
   background: linear-gradient(
     90deg,
-    rgba(60,60,60,.2) 25%,
-    rgba(120,120,120,.35) 50%,
-    rgba(60,60,60,.2) 75%
+    rgba(80,80,80,.15) 25%,
+    rgba(150,150,150,.25) 50%,
+    rgba(80,80,80,.15) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.3s infinite;
