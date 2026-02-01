@@ -2,15 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --bg: #0f172a;
-  --card: rgba(2,6,23,.7);
+body {
+  @apply bg-slate-950 text-slate-100;
 }
 
-body { @apply bg-slate-900 text-slate-200; }
+/* Gradient glow background */
+.bg-glow {
+  background:
+    radial-gradient(circle at 20% 20%, #3b82f6aa, transparent 40%),
+    radial-gradient(circle at 80% 30%, #9333eaaa, transparent 40%),
+    radial-gradient(circle at 40% 80%, #06b6d4aa, transparent 40%);
+}
 
+/* Glass cards */
 .glass {
-  background: var(--card);
-  backdrop-filter: blur(14px);
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(18px);
   border: 1px solid rgba(255,255,255,.08);
+}
+
+/* shimmer loading */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(60,60,60,.2) 25%,
+    rgba(120,120,120,.35) 50%,
+    rgba(60,60,60,.2) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.3s infinite;
+}
+
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
 }

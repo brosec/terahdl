@@ -1,43 +1,23 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import GlassCard from "../components/GlassCard.jsx";
-import DownloadApp from "../components/DownloadApp.jsx";
+import ToolApp from "../components/ToolApp.jsx";
 ---
-<BaseLayout title="TeraBox Download Helper"
-description="Access details of your public TeraBox shared files easily.">
-  <GlassCard>
-    <h1 class="text-3xl font-bold">TeraBox Download Helper</h1>
-    <p class="text-slate-400 mt-2">
-      A simple assistant for publicly shared TeraBox links.
-    </p>
-<form id="downloadForm" class="mt-4 flex gap-2">
-  <input
-    id="linkInput"
-    placeholder="Paste TeraBox link"
-    required
-    class="flex-1 px-3 py-2 rounded bg-slate-800 border border-slate-700"
-  />
-  <button class="px-4 py-2 bg-blue-600 rounded">
-    Continue
-  </button>
-</form>
 
-<script>
-document.getElementById("downloadForm").addEventListener("submit", e => {
-  e.preventDefault();
+<BaseLayout
+title="Download TeraBox Videos Easily"
+description="Access details and download files shared via public TeraBox links."
+>
 
-  const input = document.getElementById("linkInput").value.trim();
-  let surl = input;
+<section class="py-10 text-center">
+  <h2 class="text-4xl font-bold mb-3">
+    Download TeraBox Files Easily
+  </h2>
 
-  // extract from URL
-  const match = input.match(/\/s\/([a-zA-Z0-9_-]+)/);
-  if (match) surl = match[1];
+  <p class="text-slate-400 max-w-xl mx-auto">
+    Paste your TeraBox share link below to fetch file details and download safely.
+  </p>
+</section>
 
-  location.href = "/download?surl=" + encodeURIComponent(surl);
-});
-</script>
+<ToolApp client:load />
 
-  </GlassCard>
 </BaseLayout>
-
-
