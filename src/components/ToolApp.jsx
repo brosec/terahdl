@@ -24,19 +24,20 @@ export default function ToolApp() {
   return (
     <ToolCard>
 
-      <form onSubmit={handleSubmit} className="flex gap-2">
-        <input
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          placeholder="Paste TeraBox link"
-          required
-          className="flex-1 px-4 py-3 rounded bg-slate-800 border border-slate-700"
-        />
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+      <input
+        value={input}
+        onChange={e => setInput(e.target.value)}
+        placeholder="Paste TeraBox share link"
+        required
+        className="flex-1 px-5 py-4 rounded-xl bg-slate-900 border border-slate-700 focus:outline-none focus:border-blue-500"
+      />
 
-        <button className="px-6 py-3 bg-blue-600 rounded font-semibold">
-          Continue
-        </button>
-      </form>
+      <button className="btn-primary px-6 py-4 rounded-xl font-semibold">
+        Continue
+      </button>
+    </form>
+
 
       {surl && !token && (
         <div className="mt-4">

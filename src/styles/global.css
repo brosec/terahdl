@@ -2,37 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Base */
 body {
-  @apply bg-slate-950 text-slate-100;
+  @apply bg-[#070b14] text-slate-100;
 }
 
-/* subtle background glow */
+/* Soft SaaS background */
 .bg-main {
   background:
-    radial-gradient(circle at 10% 10%, #2563eb22, transparent 40%),
-    radial-gradient(circle at 90% 20%, #9333ea22, transparent 40%);
+    radial-gradient(circle at 15% 20%, #2563eb33, transparent 40%),
+    radial-gradient(circle at 85% 30%, #9333ea22, transparent 40%),
+    radial-gradient(circle at 50% 90%, #06b6d422, transparent 40%);
 }
 
+/* Premium glass cards */
 .glass {
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(255,255,255,.06);
-  backdrop-filter: blur(16px);
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255,255,255,.08);
+  backdrop-filter: blur(18px);
 }
 
+/* Card */
 .card {
-  @apply glass rounded-xl p-6 shadow-xl;
+  @apply glass rounded-2xl p-6 shadow-xl;
 }
 
-/* shimmer */
+/* Gradient buttons */
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+}
+
+/* Skeleton shimmer */
 .shimmer {
   background: linear-gradient(
     90deg,
-    rgba(80,80,80,.15) 25%,
-    rgba(150,150,150,.25) 50%,
-    rgba(80,80,80,.15) 75%
+    rgba(80,80,80,.2) 25%,
+    rgba(150,150,150,.3) 50%,
+    rgba(80,80,80,.2) 75%
   );
   background-size: 200% 100%;
-  animation: shimmer 1.3s infinite;
+  animation: shimmer 1.2s infinite;
 }
 
 @keyframes shimmer {
